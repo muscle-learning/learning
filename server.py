@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from flask import Flask, request, make_response, jsonify
+from flask_cors import CORS
+
 import os
 import werkzeug
 from datetime import datetime
@@ -10,6 +12,7 @@ import numpy as np
 
 # flask
 app = Flask(__name__)
+CORS(app)
 
 # ★ポイント1
 # limit upload file size : 1MB
@@ -25,7 +28,7 @@ UPLOAD_DIR = "upload"
 #   <input type="file" name="uploadFile"/>
 #   <input type="submit" value="submit"/>
 # </form>
-@app.route('//upload', methods=['POST'])
+@app.route('/api/upload', methods=['POST'])
 def upload_multipart():
     # ★ポイント3
     if 'uploadFile' not in request.files:
