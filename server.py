@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 from flask import Flask, request, make_response, jsonify
 from flask_cors import CORS
