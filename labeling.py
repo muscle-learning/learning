@@ -3,7 +3,7 @@ import os, glob
 import numpy as np
 import random, math
 
-root_dir = "increased"
+root_dir = "download"
 categories = ["broken","fat"]
 
 # 画像データ用配列
