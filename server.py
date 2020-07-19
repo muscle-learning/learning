@@ -10,6 +10,9 @@ from datetime import datetime
 from keras.models import model_from_json
 from keras.preprocessing import image
 import numpy as np
+import json
+import boto3
+
 
 # flask
 app = Flask(__name__)
@@ -62,17 +65,21 @@ def upload_multipart():
 
     # 予測
     features = model.predict(x)
+
+    # 事後処理（ファイル削除とS3へのアップロード）
+    bucket_name = "muscle-uploads"
+    s3 = boto3.resource('s3')
+    s3.Bucket(bucket_name).upload_file(img_path, saveFileName)
+    os.remove(img_path)
+
     return make_response(jsonify({'result': {"broken": str(features[0, 0]), "notBroken": str(features[0, 1])}}))
 
-
-# ★ポイント5
 @app.errorhandler(werkzeug.exceptions.RequestEntityTooLarge)
 def handle_over_max_file_size(error):
     print("werkzeug.exceptions.RequestEntityTooLarge")
     return 'result : file size is overed.'
 
 
-# main
 if __name__ == "__main__":
     from waitress import serve
 
